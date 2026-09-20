@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moje konto</title>
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <h2>Moje konto</h2>
+
+        <div class="avatar-circle" id="avatarCircle">U</div>
+
+        <p><strong>Nazwa użytkownika:</strong> <span id="profileUsername"></span></p>
+        <p><strong>E‑mail:</strong> <span id="profileEmail"></span></p>
+        <p><strong>Ulubiona rola:</strong> <span id="profileRole">Brak wybranej roli</span></p>
+
+        <p><strong>Nick w grze:</strong> <span id="profileNick">Brak</span></p>
+        <p><strong>O mnie:</strong> <span id="profileAbout">Brak informacji</span></p>
+
+        <div class="profile-card-actions">
+            <a href="index.php" class="hero-home-link">Strona główna</a>
+            <button id="logoutBtn" class="logout-btn">Wyloguj</button>
+        </div>
+    </div>
+
+    <div class="profile-edit-card">
+        <h3>Edytuj profil</h3>
+        <form id="profileForm">
+            <div class="form-row">
+                <label for="nickname">Nick w grze</label>
+                <input type="text" id="nickname" name="nickname" placeholder="Wpisz swój nick">
+            </div>
+
+            <div class="form-row">
+                <label for="about">O mnie</label>
+                <textarea id="about" name="about" rows="4" placeholder="Napisz kilka słów o sobie..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <label for="favRole">Ulubiona rola</label>
+                <select id="favRole" name="favRole">
+                    <option value="">Wybierz rolę</option>
+                    <option value="Top">Top</option>
+                    <option value="Jungle">Jungle</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Bot">Bot</option>
+                    <option value="Support">Support</option>
+                </select>
+            </div>
+
+            <div class="profile-actions">
+                <button type="submit" class="btn-primary">Zapisz zmiany</button>
+                <button type="reset" class="btn-ghost">Wyczyść</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    const loggedIn  = localStorage.getItem("lol_logged_in") === "true";
+    const username  = localStorage.getItem("lol_username");
+    const email     = localStorage.getItem("lol_email");
+
+    if (!loggedIn || !username) {
+        window.location.href = "login.html";
+    } else {
+   
+        const savedRole  = localStorage.getItem(`lol_${username}_role`);
+        const savedNick  = localStorage.getItem(`lol_${username}_nick`);
+        const savedAbout = localStorage.getItem(`lol_${username}_about`);
+
+        document.getElementById("profileUsername").textContent = username;
+        document.getElementById("profileEmail").textContent    = email;
+
+        if (savedRole) {
+            document.getElementById("profileRole").textContent = savedRole;
+            document.getElementById("favRole").value = savedRole;
+        }
+
+        if (savedNick) {
+            document.getElementById("profileNick").textContent = savedNick;
+            document.getElementById("nickname").value = savedNick;
+        }
+
+        if (savedAbout) {
+            document.getElementById("profileAbout").textContent = savedAbout;
+            document.getElementById("about").value = savedAbout;
+        }
+
+        const avatar = document.getElementById("avatarCircle");
+        avatar.textContent = username.charAt(0).toUpperCase();
+    }
+
+
+    document.getElementById("profileForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nick  = document.getElementById("nickname").value.trim();
+        const about = document.getElementById("about").value.trim();
+        const role  = document.getElementById("favRole").value;
+
+        localStorage.setItem(`lol_${username}_nick`, nick);
+        localStorage.setItem(`lol_${username}_about`, about);
+        if (role) {
+            localStorage.setItem(`lol_${username}_role`, role);
+        }
+
+        document.getElementById("profileNick").textContent  = nick || "Brak";
+        document.getElementById("profileAbout").textContent = about || "Brak informacji";
+        document.getElementById("profileRole").textContent  = role || "Brak wybranej roli";
+
+        alert("Profil zaktualizowany!");
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("lol_logged_in");
+        localStorage.removeItem("lol_username");
+        localStorage.removeItem("lol_email");
+        window.location.href = "login.html";
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+  <?php
+session_start();
+require_once __DIR__.'/includes/config.php';
+require_once __DIR__.'/includes/funkcje.php';
+
+
+
+$stmt = $pdo->query("
+    SELECT b.*,
+           COALESCE(AVG(k.ocena),0)  AS srednia_ocena,
+           COUNT(k.id)              AS liczba_ocen
+    FROM bildy b
+    LEFT JOIN komentarze k ON k.bild_id = b.id
+    GROUP BY b.id
+    ORDER BY b.liczba_polubien DESC, b.data_dodania DESC
+    LIMIT 5
+");
+$builds = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+  <!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>League Guider</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<div class="landing">
+
+  <header class="landing-nav">
+    <div class="nav-left">
+      <div class="logo-badge">Guider</div>
+      <nav class="nav-links">
+        <a href="ogrze.html">O grze</a>
+        <a href="top.html">Top</a>
+        <a href="jungle.html">Jungle</a>
+        <a href="mid.html">Mid</a>
+        <a href="bot.html">Adc</a>
+        <a href="support.html">Support</a>
+        <a href="dyskusje.php">Dyskusje</a>
+      </nav>
+    </div>
+    <div class="nav-right">
+    <a href="register.php" class="nav-text-link">Zarejestruj się</a>
+    <a href="login.php" class="nav-text-link">Zaloguj się</a>
+    <a href="profile.php" class="btn btn-primary btn--sm">Moje konto</a>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <section class="hero-left">
+      <p class="hero-kicker">League builds & strategie</p>
+      <h1 class="hero-title">
+        Twoje centrum<br>
+        buildów i porad<br>
+        do każdej roli.
+      </h1>
+      <p class="hero-subtitle">
+        Sprawdzone buildy, runy i przedmioty dla każdej linii,
+        plus szybki podgląd najnowszego patcha w jednym miejscu.
+      </p>
+    </section>
+  </main>
+<section class="meta-builds">
+  <h2>Najpopularniejsze buildy</h2>
+
+<article class="build-row">
+  <div class="build-role">Top</div>
+  <div class="build-champ">
+    <div class="icon-tooltip" data-tooltip-title="Darius" data-tooltip-text="Silny bruiser na linii top. Świetny w walkach 1v1 i teamfightach. Przychodzi mocno w grze wcześnie.">
+      <img src="img/Darius.jpg" alt="Darius">
+    </div>
+    <div>
+      <div class="build-champ-name">Darius</div>
+      <div class="build-summoners">
+        <div class="icon-tooltip" data-tooltip-title="Flash" data-tooltip-text="Podstawowy czar przywoływacza do agresji, ucieczki i pozycjonowania w walkach.">
+          <img src="img/flash.jpg" alt="Flash" class="summoner-icon">
+        </div>
+        <div class="icon-tooltip" data-tooltip-title="Ghost" data-tooltip-text="Czar przywoływacza zwiększający prędkość poruszania. Świetny do gonienia wrogów.">
+          <img src="img/ghost.jpg" alt="Ghost" class="summoner-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-runes">
+    <div class="icon-tooltip" data-tooltip-title="Conqueror" data-tooltip-text="Runica dawująca obrażenia i leczenie w długich walkach. Idealna dla bruiserów jak Darius.">
+      <img src="img/Conqueror_rune.png" alt="Conqueror">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Triumph" data-tooltip-text="Dodatkowy leczenie po zabiciu przeciwnika. Pomaga w teamfightach.">
+      <img src="img/triumph.jpg" alt="triumph">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Alacrity" data-tooltip-text="Prędkość ataku dla szybszych combo atakowych.">
+      <img src="img/alacrity_rune.png" alt="alacrity">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Last Stand" data-tooltip-text="Zmniejsza obrażenia, gdy masz mało zdrowia. Ratuje życie w kritycznych momentach.">
+      <img src="img/laststand.png" alt="last stand">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Bone Plating" data-tooltip-text="Redukuje obrażenia od atakujących wrogów. Świetna obrona na linii.">
+      <img src="img/64px-Bone_Plating_rune.png" alt="Bone Plating">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Overgrowth" data-tooltip-text="Zwiększa maksymalne zdrowie za każdego zabitego minionka. Długoterminowy wzrost zdrowia.">
+      <img src="img/Overgrowth_rune.png" alt="Overgrowth">
+    </div>
+  </div>
+
+  <div class="build-items">
+    <div class="icon-tooltip" data-tooltip-title="Tabis" data-tooltip-text="Buty obniżające obrażenia od ataków. Podstawa obrony przeciw atakującym.">
+      <img src="img/tabi.png" alt="tabi">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Stridebreaker" data-tooltip-text="Mityczny przedmiot dla wojowników. Daje doskok i slowdown wrogom. Wspaniały dla Dariusa.">
+      <img src="img/Stridebreaker.png" alt="Stridebreaker">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Sterak's Gage" data-tooltip-text="Zwiększa siłę ataku i daje tarcze przy atakowaniu. Świetne dla bruiserów.">
+      <img src="img/Sterak.png" alt="Sterak">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Dead Man's Plate" data-tooltip-text="Zbroja z szybkością poruszania. Doskonała obrona dla tankowych wojowników.">
+      <img src="img/deadmans.png" alt="deadmans">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Force of Nature" data-tooltip-text="Zmniejsza obrażenia od czarów. Świetna obrona magiczna.">
+      <img src="img/fon.png" alt="fon">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Spear of Shojin" data-tooltip-text="Przedmiot dający umiejętności mana i obrażenia. Świetny dla AD casterów.">
+      <img src="img/Spear_of_Shojin_item.png" alt="Spear of Shojin">
+    </div>
+  </div> 
+</article> 
+
+
+ <article class="build-row">
+  <div class="build-role">Jungle</div>
+  <div class="build-champ">
+    <div class="icon-tooltip" data-tooltip-title="Briar" data-tooltip-text="Agresywna junglerce z doskokami i wysokim damage output. Świetna do early gank'ów.">
+      <img src="img/Briar.png" alt="Briar">
+    </div>
+    <div>
+      <div class="build-champ-name">Briar</div>
+      <div class="build-summoners">
+        <div class="icon-tooltip" data-tooltip-title="Flash" data-tooltip-text="Podstawowy czar przywoływacza do agresji, ucieczki i pozycjonowania w walkach.">
+          <img src="img/flash.jpg" alt="Flash" class="summoner-icon">
+        </div>
+        <div class="icon-tooltip" data-tooltip-title="Smite" data-tooltip-text="Czar przywoływacza dla junglera. Zabija neutralne monstra i poskramia duże monstra.">
+          <img src="img/smite.jpg" alt="Smite" class="summoner-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-runes">
+    <div class="icon-tooltip" data-tooltip-title="Press the Attack" data-tooltip-text="Ataki zwiększają obrażenia dla sojuszników. Świetna dla agresywnych junglérów.">
+      <img src="img/presstheattack.png" alt="presstheattack">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Triumph" data-tooltip-text="Dodatkowy leczenie po zabiciu przeciwnika. Pomaga w teamfightach.">
+      <img src="img/triumph.jpg" alt="triumph">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Alacrity" data-tooltip-text="Prędkość ataku dla szybszych combo atakowych.">
+      <img src="img/alacrity_rune.png" alt="alacrity">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Coup de Grace" data-tooltip-text="Więcej obrażeń dla wrogów z mało zdrowia. Doskonała dla executów.">
+      <img src="img/coupdegrace.png" alt="coupdegrace">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Sudden Impact" data-tooltip-text="Penetracja magiczna po używaniu mobilności. Zwiększa damage od umiejętności.">
+      <img src="img/syddenimpact.png" alt="sydden impact">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Treasure Hunter" data-tooltip-text="Dodatkowe złoto za zabiciu wrogów. Pomaga zarobić na junglerce.">
+      <img src="img/treasurehunter.png" alt="treasure hunter">
+    </div>
+  </div>
+
+  <div class="build-items">
+    <div class="icon-tooltip" data-tooltip-title="Tabis" data-tooltip-text="Buty obniżające obrażenia od ataków. Podstawa obrony przeciw atakującym.">
+      <img src="img/tabi.png" alt="tabi">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Titanic Hydra" data-tooltip-text="Przedmiot atakowy dający zdrowie i AOE obrażenia. Świetny dla bruiserów.">
+      <img src="img/tytanichydra.jpg" alt="tytanic hydra">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Black Cleaver" data-tooltip-text="Obniża pancerz wrogów dla całego teamu. Świetny dla team obrażeń.">
+      <img src="img/blackcleaver.png" alt="Black cleaver">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Death's Dance" data-tooltip-text="Zmniejsza obrażenia i daje opcję na leczenie. Świetne dla żywotności.">
+      <img src="img/deathdance.png" alt="death dance">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Spirit Visage" data-tooltip-text="Magiczna obrona z leczeniem. Zwiększa efektywność leczy z umiejętności.">
+      <img src="img/spiritvisage.png" alt="spirit visage">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Guardian Angel" data-tooltip-text="Powrót do życia po śmierci. Świetny dla carry i wichtnych postaci.">
+      <img src="img/Guardian_Angel_item.png" alt="Guardian Angel">
+    </div>
+  </div> 
+</article> 
+
+
+   <article class="build-row">
+  <div class="build-role">Mid</div>
+
+  <div class="build-champ">
+    <div class="icon-tooltip" data-tooltip-title="Syndra" data-tooltip-text="Moc magiczna z dużym potencjałem burst damage. Wysoka mobilność i kontrola na mapie.">
+      <img src="img/Syndra.png" alt="Syndra">
+    </div>
+    <div>
+      <div class="build-champ-name">Syndra</div>
+      <div class="build-summoners">
+        <div class="icon-tooltip" data-tooltip-title="Flash" data-tooltip-text="Podstawowy czar przywoływacza do agresji, ucieczki i pozycjonowania w walkach.">
+          <img src="img/flash.jpg" alt="Flash" class="summoner-icon">
+        </div>
+        <div class="icon-tooltip" data-tooltip-title="Teleport" data-tooltip-text="Czar przywoływacza do teleportacji na linię. Świetny do kontaktu z teamfightami.">
+          <img src="img/tp.png" alt="Teleport" class="summoner-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-runes">
+    <div class="icon-tooltip" data-tooltip-title="First Strike" data-tooltip-text="Otrzymuj bonus złota za pierwsze obrażenia wrogom. Świetne dla carry'ego.">
+      <img src="img/FirstStrike.png" alt="FirstStrike">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Magical Footwear" data-tooltip-text="Darmowe buty po pewnym czasie. Oszczędzasz złoto na inne przedmioty.">
+      <img src="img/Magical_Footwear_rune.png" alt="Magical Footwear rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Triple Tonic" data-tooltip-text="Dodatkowe mikstury i buffory dla zdrowia/many. Pomaga survive'ować wcześniej.">
+      <img src="img/Triple_Tonic_rune.png" alt="Triple Tonic rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Jack of All Trades" data-tooltip-text="Bonus do wszystkich stat'ów. Uniwersalna runica dla wszechstronnych postaci.">
+      <img src="img/Jack_of_All_Trades_rune.png" alt="Jack of All Trades rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Legend: Haste" data-tooltip-text="Zmniejszenie cooldown'ów umiejętności. Więcej spam'u i kontroli.">
+      <img src="img/Legend-_Haste_rune.png" alt="Legend Haste rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cut Down" data-tooltip-text="Więcej obrażeń dla wrogów z więcej zdrowia. Pomaga zabijać tanków.">
+      <img src="img/Cut_Down_rune.png" alt="Cut Down rune">
+    </div>
+  </div>
+
+  <div class="build-items">
+    <div class="icon-tooltip" data-tooltip-title="Ionian Boots of Lucidity" data-tooltip-text="Buty z zmniejszeniem cooldown'ów. Świetne dla cast'ów do continuous damage.">
+      <img src="img/Ionian_Boots_of_Lucidity_item.png" alt="Ionian Boots">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Blackfire Torch" data-tooltip-text="Magiczny przedmiot z burn damage. Świetny dla AP carry'ego.">
+      <img src="img/Blackfire_Torch_item.png" alt="Blackfire Torch">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cosmic Drive" data-tooltip-text="AP z szybkością poruszania. Zwiększa mobilność na mapie i burst potential.">
+      <img src="img/Cosmic_Drive_item.png" alt="Cosmic Drive">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Rabadon's Deathcap" data-tooltip-text="Największy AP przedmiot. Niezbędny do burst damage dla AP carry'ego.">
+      <img src="img/Rabadon's_Deathcap_item.png" alt="Rabadon's Deathcap">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Void Staff" data-tooltip-text="Penetracja magiczna. Przebija obronę magiczną wrogów.">
+      <img src="img/Void_Staff_item.png" alt="Void Staff">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cryptbloom" data-tooltip-text="Magiczna obrona z bonus AP. Świetna dla survivalności AP carry'ego.">
+      <img src="img/Cryptbloom_item.png" alt="Cryptbloom">
+    </div>
+  </div> 
+</article> 
+
+
+ <article class="build-row">
+  <div class="build-role">Bot</div>
+
+  <div class="build-champ">
+    <div class="icon-tooltip" data-tooltip-title="Jhin" data-tooltip-text="Czwarty czar łowcy. Wysokie obrażenia per strzał, idealne do burst damage combo.">
+      <img src="img/Jhin.png" alt="Jhin">
+    </div>
+    <div>
+      <div class="build-champ-name">Jhin</div>
+      <div class="build-summoners">
+        <div class="icon-tooltip" data-tooltip-title="Flash" data-tooltip-text="Podstawowy czar przywoływacza do agresji, ucieczki i pozycjonowania w walkach.">
+          <img src="img/flash.jpg" alt="Flash" class="summoner-icon">
+        </div>
+        <div class="icon-tooltip" data-tooltip-title="Barrier" data-tooltip-text="Szybka tarcza na krótko. Ratuje się w instant poke'ach i burst combo.">
+          <img src="img/Barrier.png" alt="Barrier" class="summoner-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-runes">
+    <div class="icon-tooltip" data-tooltip-title="Fleet Footwork" data-tooltip-text="Leczenie i szybkość poruszania ze strzałów. Świetna do sustain'u na linii.">
+      <img src="img/64px-Fleet_Footwork_rune.png" alt="Fleet Footwork">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Presence of Mind" data-tooltip-text="Mana po zabiciu. Pozwala na continuous spamowanie umiejętności.">
+      <img src="img/Presence_of_Mind_rune.png" alt="Presence of Mind">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Legend: Bloodline" data-tooltip-text="Lifesteal ze strzałów. Zwiększa survival'ość w prolonged fights.">
+      <img src="img/Legend-_Bloodline_rune.png" alt="Legend Bloodline">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cut Down" data-tooltip-text="Więcej obrażeń dla wrogów z więcej zdrowia. Pomaga zabijać tanków.">
+      <img src="img/Cut_Down_rune.png" alt="Cut Down rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cash Back" data-tooltip-text="Bonus złota za zabiciu wrogów. Pomaga zarobić na ADC.">
+      <img src="img/Cash_Back_rune.png" alt="Cash Back">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Triple Tonic" data-tooltip-text="Dodatkowe mikstury i buffory dla zdrowia/many. Pomaga survive'ować wcześniej.">
+      <img src="img/Triple_Tonic_rune.png" alt="Triple Tonic rune">
+    </div>
+  </div>
+
+  <div class="build-items">
+    <div class="icon-tooltip" data-tooltip-title="Boots of Swiftness" data-tooltip-text="Szybkość poruszania ze slow resisance. Idealne do kite'owania i pozycjonowania.">
+      <img src="img/Boots_of_Swiftness_item.png" alt="Boots of Swiftness">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Youmuu's Ghostblade" data-tooltip-text="AD przedmiot z penetracją pancerza. Zwiększa szybkość i mobilność.">
+      <img src="img/Youmuu's_Ghostblade_item.png" alt="Youmuu's Ghostblade">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Rapid Firecannon" data-tooltip-text="Zwiększa range auta i daje AOE obrażenia. Świetny dla Jhina.">
+      <img src="img/Rapid_Firecannon_item.png" alt="Rapid Firecannon">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Infinity Edge" data-tooltip-text="Krytyczne trafienia z extra damage. Mityczny przedmiot dla ADC'ów.">
+      <img src="img/Infinity_Edge_item.png" alt="Infinity Edge">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="The Collector" data-tooltip-text="Burst damage z execute potencjałem. Świetna dla finisherów.">
+      <img src="img/The_Collector_item.png" alt="The Collector">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Lord Dominik's Regards" data-tooltip-text="Pancerz penetracja. Niezbędna obrona contra dużych tankowych postaci.">
+      <img src="img/Lord_Dominik's_Regards_item.png" alt="Lord Dominik's Regards">
+    </div>
+  </div> 
+</article> 
+
+
+<article class="build-row">
+  <div class="build-role">Support</div>
+
+  <div class="build-champ">
+    <div class="icon-tooltip" data-tooltip-title="Poppy" data-tooltip-text="Młotem pancerna strażniczka. Kontrola teamfight'ów poprzez displacement i CC.">
+      <img src="img/poppy.png" alt="Poppy">
+    </div>
+    <div>
+      <div class="build-champ-name">Poppy</div>
+      <div class="build-summoners">
+        <div class="icon-tooltip" data-tooltip-title="Flash" data-tooltip-text="Podstawowy czar przywoływacza do agresji, ucieczki i pozycjonowania w walkach.">
+          <img src="img/flash.jpg" alt="Flash" class="summoner-icon">
+        </div>
+        <div class="icon-tooltip" data-tooltip-title="Heal" data-tooltip-text="Leczenie dla siebie i sojusznika. Ratuje życie i daje szybkość w teamfightach.">
+          <img src="img/heal.jpg" alt="Heal" class="summoner-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-runes">
+    <div class="icon-tooltip" data-tooltip-title="Unsealed Spellbook" data-tooltip-text="Zmiana czarów przywoływacza w grze. Uniwersalna runica dla support'ów.">
+      <img src="img/64px-Unsealed_Spellbook_rune.png" alt="Unsealed Spellbook">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Magical Footwear" data-tooltip-text="Darmowe buty po pewnym czasie. Oszczędzasz złoto na inne przedmioty.">
+      <img src="img/Magical_Footwear_rune.png" alt="Magical Footwear rune">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Biscuit Delivery" data-tooltip-text="Dodatkowe biszkopty dla zdrowia i many. Pomaga survive'ować wcześniej.">
+      <img src="img/Biscuit_Delivery_rune.png" alt="Biscuit Delivery">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Cosmic Insight" data-tooltip-text="Zmniejszenie cooldown'ów czarów przywoływacza. Dodatkowe utility.">
+      <img src="img/Cosmic_Insight_rune.png" alt="Cosmic Insight">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Bone Plating" data-tooltip-text="Redukuje obrażenia od atakujących wrogów. Świetna obrona na linii.">
+      <img src="img/64px-Bone_Plating_rune.png" alt="Bone Plating">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Unflinching" data-tooltip-text="Redukcja CC effectów. Zwiększa kontrolę w teamfightach.">
+      <img src="img/Unflinching_rune.png" alt="Unflinching">
+    </div>
+  </div>
+
+  <div class="build-items">
+    <div class="icon-tooltip" data-tooltip-title="Boots of Swiftness" data-tooltip-text="Szybkość poruszania ze slow resisance. Idealne do kite'owania i pozycjonowania.">
+      <img src="img/Boots_of_Swiftness_item.png" alt="Boots of Swiftness">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Celestial Opposition" data-tooltip-text="Przedmiot support'owy dla AoE slow. Świetny do controlling teamfight'ów.">
+      <img src="img/Celestial_Opposition_item.png" alt="Celestial Opposition">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Redemption" data-tooltip-text="Przedmiot supportu dla healingu. Leczenie dla całego teamu w radius.">
+      <img src="img/Redemption_item.png" alt="Redemption">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Locket of the Iron Solari" data-tooltip-text="Przedmiot magicznej obrony z shieldem. Chroni team w teamfightach.">
+      <img src="img/Locket_of_the_Iron_Solari_item.png" alt="Locket of the Iron Solari">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Dead Man's Plate" data-tooltip-text="Zbroja z szybkością poruszania. Doskonała obrona dla tankowych wojowników.">
+      <img src="img/deadmans.png" alt="dead mans">
+    </div>
+    <div class="icon-tooltip" data-tooltip-title="Kaenic Rookern" data-tooltip-text="Magiczna obrona z redukcją magicznych obrażeń. Contra mage'ów.">
+      <img src="img/Kaenic_Rookern_item.png" alt="Kaenic Rookern">
+    </div>
+  </div> 
+</article> 
+
+
+  <section class="patch-section">
+    <h2 class="patch-title">Patch w skrócie</h2>
+    <figure class="patch-figure">
+      <img src="img/patch25.24.jpg" alt="Opis patcha 25.24" class="patch-image">
+      <figcaption class="patch-caption">
+        Smolder Renifer, Milio Zimowego Zachwytu, Zeri Zimowego Zachwytu i inni bohaterowie
+        oraz zmiany systemowe w patchu 25.24.
+      </figcaption>
+    </figure>
+  </section>
+    <footer>
+      <p>Serhii Brachan | Projekt dyplomowy</p>
+      <a href="https://www.leagueoflegends.com" target="_blank">Oficjalna strona Riot Games</a>
+    </footer>
+  </main>
+
+  <div class="side-bg side-bg-right"></div>
+</div>
+</body>
+</html> 
+
